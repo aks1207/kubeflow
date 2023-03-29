@@ -1,0 +1,18 @@
+name: Train XGBoost Model
+inputs:
+  - {name: data_path, type: String}
+  - {name: model_path, type: String}
+outputs:
+  - {name: model, type: Model}
+implementation:
+  container:
+    image: 'python:3.8'
+    command: ['sh', '-c']
+    args:
+      - |
+        pip install pandas scikit-learn xgboost
+        python train.py --data_path $0 --model_path $1
+    inputs:
+      - {name: data_path, path: /mnt/data}
+    outputs:
+      - {name: model, path: /mnt/model}
