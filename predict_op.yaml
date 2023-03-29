@@ -1,9 +1,8 @@
-name: Train XGBoost Model
+name: Predict with XGBoost Model
 inputs:
   - {name: data_path, type: String}
-  - {name: model_path, type: String}
-outputs:
-  - {name: model, type: Model}
+  - {name: model_path, type: Model}
+  - {name: predictions_path, type: String}
 implementation:
   container:
     image: 'python:3.8'
@@ -11,8 +10,9 @@ implementation:
     args:
       - |
         pip install pandas scikit-learn xgboost
-        python train.py --data_path $0 --model_path $1
+        python predict.py --data_path $0 --model_path $1 --predictions_path $2
     inputs:
       - {name: data_path, path: /mnt/data}
+      - {name: model_path, path: /mnt/model}
     outputs:
-      - {name: model, path: /mnt/model}
+      - {name: predictions_path, path: /mnt/predictions}
